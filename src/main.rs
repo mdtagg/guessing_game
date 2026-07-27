@@ -1,4 +1,5 @@
 use rand::Rng;
+use std::cmp::Ordering;
 use std::io;
 // for documentation on crates Cargo doc --open
 
@@ -17,4 +18,12 @@ fn main() {
         //multiple different states
         .expect("Failed to read line");
     println!("You guessed:{guess}");
+
+    //match is an expression made up of "arms" similar to switch cases
+    //here it compares guess to secret_number, can be used on anything comparable
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
 }
