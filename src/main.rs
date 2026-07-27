@@ -17,6 +17,10 @@ fn main() {
         //.expect -> value, Result = enum, a type that can be in one of
         //multiple different states
         .expect("Failed to read line");
+    //Rust allows "shadowing" creating a variable with the same name of different type
+    //prevents having to create variables with new names only to change a type
+    //The : u32 tells rust which type to convert to in the parse function
+    let guess: u32 = guess.trim().parse().expect("Please type a number!");
     println!("You guessed:{guess}");
 
     //match is an expression made up of "arms" similar to switch cases
