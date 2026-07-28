@@ -6,20 +6,22 @@ use std::io;
 fn main() {
     println!("Guess the number!");
     let secret_number = rand::thread_rng().gen_range(1..=100);
-    println!("The secret number is: {secret_number}");
     loop {
         println!("Please input your guess.");
+        //&mut defines guess as mutable
         let mut guess = String::new();
         io::stdin()
-            //&mut defines guess as mutable
             //2nd time "let .readline change guess only now, main retains ownership"
             .read_line(&mut guess)
-            //.expect -> value, Result = enum, a type in one of multiple states
+            //.expect -> Result = enum, a type in one of multiple states
             .expect("Failed to read line");
-        //Rust "shadowing" -> creating a variable with the same name of different type
-        //prevents variables with new names only to change a type
+        //Rust "shadowing" -> creating a variable with the same name
+        //prevents extra variables only to change a type
         //The : u32 tells rust which type to convert to in the parse function
-        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
         println!("You guessed:{guess}");
 
         //match is an expression made up of "arms",similar to switch cases
@@ -27,7 +29,10 @@ fn main() {
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => println!("You win!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
         }
     }
 }
